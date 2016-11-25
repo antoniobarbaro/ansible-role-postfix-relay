@@ -1,0 +1,19 @@
+galaxy_info:
+  author: Antonio Barbaro
+  description: configure postfix for relaying emails
+  license: BSD
+
+  min_ansible_version: 2.0
+
+  platforms:
+  - name: EL
+    versions:
+    - 7
+
+  galaxy_tags:
+        - postfix
+        - relay
+        - mail
+
+dependencies: []
+

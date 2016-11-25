@@ -1,0 +1,9 @@
+---
+# tasks file for postfix-relay
+- name: Install postfix and related packages
+  yum: state=latest name={{ item }}
+  with_items:
+    - postfix
+    - cyrus-sasl-plain
+    - cyrus-sasl
+
