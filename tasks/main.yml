@@ -6,4 +6,55 @@
     - postfix
     - cyrus-sasl-plain
     - cyrus-sasl
+    - mailx
+
+- name: Configure postfix relay password
+  lineinfile:
+    dest: /etc/postfix/sasl_passwd
+    regexp: "{{ postfix_relay_host }}"
+    create: yes
+    state: present
+    backup: yes
+    mode: 0600
+    line: "[{{ postfix_relay_host }}]:{{ postfix_relay_port }} {{ postfix_relay_username }}:{{ postfix_relay_password }}"
+  notify: restart postfix 
+
+- name: Encode postfix relay password file
+  shell: postmap hash:/etc/postfix/sasl_passwd
+  notify: restart postfix 
+
+- name: Configure postfix relayhost
+  shell: postconf -e 'relayhost = [{{ postfix_relay_host }}]:{{ postfix_relay_port }}'
+  notify: restart postfix
+
+- name: Configure postfix sasl auth enable
+  shell: postconf -e 'smtp_sasl_auth_enable = yes'
+  notify: restart postfix
+
+- name: Configure postfix security options noanonymous
+  shell: postconf -e 'smtp_sasl_security_options = noanonymous'
+  notify: restart postfix
+
+- name: Configure postfix passwd path
+  shell: postconf -e 'smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd'
+  notify: restart postfix
+
+- name: Configure postfix use tls
+  shell: postconf -e 'smtp_use_tls = yes'
+  notify: restart postfix
+
+- name: Configure postfix certs
+  shell: postconf -e 'smtp_tls_CAfile = /etc/ssl/certs/ca-bundle.crt'
+  notify: restart postfix
+
+- name: Configure postfix security level encrypt
+  shell: postconf -e 'smtp_tls_security_level = encrypt'
+  notify: restart postfix
+
+- name: Configure postfix starttls yes
+  shell: postconf -e 'smtp_tls_note_starttls_offer = yes'
+  notify: restart postfix
+
+- name: Start and enable postfix
+  service: name=postfix state=started enabled=yes
 
