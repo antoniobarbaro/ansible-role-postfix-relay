@@ -40,7 +40,7 @@
   notify: restart postfix
 
 - name: Configure postfix use tls
-  shell: postconf -e 'smtp_use_tls = yes'
+  shell: postconf -e 'smtp_use_tls = {{ postfix_use_tls }}'
   notify: restart postfix
 
 - name: Configure postfix certs

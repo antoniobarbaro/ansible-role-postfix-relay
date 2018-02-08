@@ -1,0 +1,5 @@
+postfix_relay_host: email-smtp.eu-west-1.amazonaws.com
+postfix_relay_port: 587
+postfix_relay_username: xxxxx
+postfix_relay_password: xxxxx
+postfix_use_tls: 'yes'
