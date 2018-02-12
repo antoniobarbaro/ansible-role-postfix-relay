@@ -28,7 +28,7 @@
   notify: restart postfix
 
 - name: Configure postfix sasl auth enable
-  shell: postconf -e 'smtp_sasl_auth_enable = yes'
+  shell: postconf -e 'smtp_sasl_auth_enable = {{ postfix_relay_smtp_sasl_auth_enable }}'
   notify: restart postfix
 
 - name: Configure postfix security options noanonymous
